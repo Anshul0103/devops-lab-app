@@ -32,7 +32,8 @@ pipeline {
                 echo 'Testing application'
 
                 sh '''
-                    grep -q "Welcome to My DevOps Project" app/index.html
+                    test -f app/index.html
+                    grep -qiF "Welcome to My DevOps Project" app/index.html
                     echo "Application test passed"
                 '''
             }
