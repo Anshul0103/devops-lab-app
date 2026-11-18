@@ -1,0 +1,66 @@
+services:
+  jenkins:
+    image: jenkins/jenkins:lts-jdk17
+    container_name: jenkins
+    ports:
+      - "8080:8080"
+    volumes:
+      - jenkins_home:/var/jenkins_home
+    networks:
+      - devops-net
+    restart: unless-stopped
+    mem_limit: 2048m
+    cpus: 1.2
+
+  ansible:
+    build:
+      context: ./ansible
+      dockerfile: controller/Dockerfile
+    image: devops-ansible-controller:9
+    container_name: ansible-controller
+    command: sleep infinity
+    volumes:
+      - ./ansible:/ansible
+    networks:
+      - devops-net
+    restart: unless-stopped
+    mem_limit: 384m
+    cpus: 0.3
+
+  target1:
+    build:
+      context: ./ansible
+      dockerfile: target/Dockerfile
+    image: devops-target:9
+    container_name: target-node1
+    ports:
+      - "8081:80"
+#    command: sleep infinity
+    networks: 
+      - devops-net
+    restart: unless-stopped
+    mem_limit: 256m
+    cpus: 0.25
+
+  target2:
+    build:
+      context: ./ansible
+      dockerfile: target/Dockerfile
+    image: devops-target:9
+    container_name: target-node2
+    ports:
+      - "8082:80"
+#    command: sleep infinity
+    networks:
+      - devops-net
+    restart: unless-stopped
+    mem_limit: 256m
+    cpus: 0.25
+
+networks:
+    devops-net:
+      name: devops-net
+      driver: bridge
+
+volumes:
+    jenkins_home:

@@ -1,0 +1,82 @@
+---
+- name: Deploy Nginx Web Application
+  hosts: webservers
+  become: true
+  gather_facts: true
+
+  tasks:
+
+    - name: Install Nginx
+      ansible.builtin.dnf:
+        name: nginx
+        state: present
+
+    - name: Create custom website
+      ansible.builtin.copy:
+        content: |
+          <!DOCTYPE html>
+          <html>
+          <head>
+              <title>My DevOps Lab</title>
+              <style>
+                  body {
+                      font-family: Arial;
+                      text-align: center;
+                      margin-top: 100px;
+                      background: #eef2f7;
+                  }
+                  h1 {
+                      color: #1769aa;
+                  }
+              </style>
+          </head>
+          <body>
+              <h1>Welcome to My DevOps Lab!</h1>
+              <h2>Server: {{ inventory_hostname }}</h2>
+              <p>Deployed automatically using Ansible.</p>
+              <p>Infrastructure: AlmaLinux 9 + Docker</p>
+          </body>
+          </html>
+        dest: /usr/share/nginx/html/index.html
+        owner: root
+        group: root
+        mode: '0644'
+
+    - name: Check whether Nginx is running
+      ansible.builtin.command: pgrep -x nginx
+      register: nginx_status
+      changed_when: false
+      failed_when: false
+
+    - name: Remove stale Nginx PID file
+      ansible.builtin.file:
+        path: /run/nginx.pid
+        state: absent
+      when: nginx_status.rc != 0
+
+    - name: Start Nginx if not running
+      ansible.builtin.command: nginx
+      when: nginx_status.rc != 0
+      changed_when: true
+
+    - name: Wait for Nginx port 80
+      ansible.builtin.wait_for:
+        port: 80
+        state: started
+        timeout: 30
+
+    - name: Verify website from Ansible controller
+      ansible.builtin.uri:
+        url: "http://{{ inventory_hostname }}"
+        method: GET
+        status_code: 200
+        return_content: true
+      delegate_to: localhost
+      become: false
+      register: website_check
+      changed_when: false
+
+    - name: Display deployment result
+      ansible.builtin.debug:
+        msg: "{{ inventory_hostname }} website deployed successfully!"
+
