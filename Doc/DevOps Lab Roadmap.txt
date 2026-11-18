@@ -1,0 +1,81 @@
+DevOps Lab Roadmap
+1. Current phase
+   Docker Infrastructure ✅
+   
+   Docker verify karna, network banana aur four containers launch karna.
+2. SSH Configuration
+   
+   Ansible controller aur dono target nodes mein SSH configure karna.
+3. Ansible Configuration
+   
+   Inventory, SSH keys aur Ansible connectivity test karna.
+4. Ansible Playbooks
+   
+   Nginx install karna aur application deploy karna.
+5. GitHub Integration
+   
+   Repository create karna aur Jenkins ko GitHub se connect karna.
+6. Jenkins Pipeline
+   
+   Jenkinsfile, Poll SCM, build, test aur deployment stages banana.
+7. End-to-End Automation
+   
+   GitHub par code push karke automatic deployment verify karna.
+8. AWS Migration
+   
+   Isi architecture ko EC2-based infrastructure par implement karna.
+------------------------------------------------
+docker compose commands -
+
+docker --version
+docker compose version
+
+sudo docker ps > process status of container
+sudo mkdir -p /opt/devops
+echo $USER
+sudo chown -R $USER:$USER /opt/devops
+mkdir -p jenkins ansible
+docker compose up -d
+docker compose config  > to check the syntax of file
+nl -ba docker-compose.yml | sed -n '30,42p' > give the output of exact block of line
+
+docker compose stop
+docker compose start
+docker compose down > stop and remove all containers
+docker compose up -d > start containers in detached mode
+
+docker compose up -d --build ansible target1 target2 > Ab updated containers build karo (use this command to up the container with custom image)
+docker compose ps > check containers status
+
+docker compose ps > Current project's containers
+
+docker compose ps -a > Running + stopped containers
+
+docker compose ps --services > Service names only 
+
+docker ps > All running Docker containers
+
+docker ps -a > All containers, including stopped 
+ansible webservers -i /ansible/inventory.ini -m command -a "hostname" > Isse dono managed nodes identify ho jayenge.
+----------
+To run the command inside container > docker exec Jenkins
+
+docker exec jenkins cat /var/jenkins_home/secrets/initialAdminPassword > to access container
+
+docker exec -it ansible-controller bash > to enter a docker container
+---------------------
+if we made some mistake in dockercompose file. now we need rebuild the image and container both
+docker compose config
+docker compose build target1 target2 > Rebuild target images
+docker compose up -d --force-recreate > Recreate and start containers
+docker exec target-node1 ps aux | grep sshd > Check SSH processes
+
+=============
+ssh-keygen -t ed25519 \
+-f ansible/ssh/id_ed25519 \
+-N "" \
+-C "ansible-lab"
+
+
+creating docker custom image -
+

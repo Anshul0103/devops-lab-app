@@ -1,0 +1,424 @@
+git init                                                                                                                                                                  
+   3 git status                                                                                                                                                                
+   4 git add ./                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
+   8 git commit -am "First commit"                                                                                                                                             
+   9 git remote add origin <your GitHub repo url>                                                                                                                                                                                                                                                                        
+  11 git branch                                                                                                                                                                
+  12 git branch -M main                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
+                                                                                                                                                                                                                                                                                                                                                                                                                                                      
+  18 git pull origin main --allow-unrelated-histories                                                                                                                                                                                                                                                                                       
+  21 git push -u origin main 
+====================================== 
+Tools-
+java 21
+
+=======================================
+Vagrant commands:
+vagrant global-status
+vagrant init
+vagrant validate
+vagrant provision
+vagrant reload --provision
+vagrant up
+vagrant ssh
+vagrant destroy
+
+Vagrant vs packer:
+Vagrant creates and manages virtual machines.
+Packer builds reusable machine images (for example,  VirtualBox Vm images) with software pre-installed.
+Ansible or Shell scripts can automate software installation during the Packer build.
+
+Ansible:
+set -eu
+-e: Agar script mein koi command fail hui, toh aage execute mat karo, script ko stop kar do.
+-u: Agar tum kisi undefined variable (jo declare nhi hua) ko use karte ho, toh script error dekar exit ho jati hai
+
+Ques01: VM hardening kya hota hai?
+VM hardening ka matlab hai virtual machine ko secure banana, taki hacker, malware aur unauthorized users uska misuse na kar sakein.
+Imagine karo tumne ek Linux server ki VM banayi hai. By default usmein kuch unnecessary services, open ports aur default configurations ho sakti hain.
+VM Hardening karke hum un security weaknesses ko reduce karte hain.
+VM Hardening mein kya-kya karte hain?
+Disable unnecessary services: Jo services use nahi ho rahi hain, unhe band karna.
+Close unused ports: Unnecessary network ports ko close karna.
+Strong passwords: Weak passwords ko replace karna.
+SSH security: Root login disable karna aur SSH access secure karna.
+Firewall configure karna: Sirf required network traffic allow karna.
+Install security patches: OS aur software ko updated rakhna.
+User permissions: Users ko sirf required permissions dena.
+Disable unused accounts: Unnecessary user accounts remove ya disable karna. 
+
+Interview mein answer:
+"VM Hardening is the process of securing a Virtual Machine by disabling unnecessary services, closing unused ports, applying security patches, configuring firewalls, and implementing strong access controls to reduce its attack surface."
+
+Important points:
+Don't install everything in one large script. Separate scripts make troubleshooting, maintenance, and upgrades much easier.
+I can also help you build a complete automated Vagrant Devops Master Node Setup with Docker, Kubernetes, Jenkins, SonarQube, Prometheus, Grafana, and Argo CD.
+
+Always look for plugins if you are able to find.
+Always check for connectivity if communication is not happening.
+====================================
+Install Jenkins
+make script non interactive
+
+sudo dpkg --configure -a
+sudo apt --fix-broken install -y
+sudo apt update
+
+check if java is not installed install it
+check if java version is 21 or less than 21 
+if less than 21 upgrade to 21
+if it is already installed skip this step 
+java -version
+-bash: java: command not found
+
+sudo apt install -y fontconfig openjdk-21-jre
+give me message java is installed successfully 
+and also show me the result of java -version
+
+sudo mkdir -p /etc/apt/keyrings
+sudo wget -O /etc/apt/keyrings/jenkins-keyring.asc \
+https://pkg.jenkins.io/debian-stable/jenkins.io-2026.key
+
+echo "deb [signed-by=/etc/apt/keyrings/jenkins-keyring.asc] https://pkg.jenkins.io/debian-stable binary/" | sudo tee /etc/apt/sources.list.d/jenkins.list
+
+sudo apt update
+sudo apt install -y Jenkins
+
+sudo systemctl enable jenkins
+sudo systemctl start Jenkins
+sudo systemctl status jenkins
+
+
+http://localhost:8080 
+
+sudo cat /var/lib/jenkins/secrets/initialAdminPassword
+
+Copy the password.
+Paste it into the Jenkins Unlock page.
+Select Install suggested plugins.
+Create your administrator account.
+
+jenkins- http://localhost:8080/
+
+
+===============
+first ci and cd
+
+Step1:  Create a dedicated Jenkins installation script
+sudo mkdir -p /opt/devops/scripts
+sudo chown -R vagrant:vagrant /opt/devops
+nano /opt/devops/scripts/install-docker.sh
+create script
+
+Save the file and make it executable:
+sudo chown root:root /opt/devops/scripts/install-docker.sh
+sudo chmod 755 /opt/devops/scripts/install-docker.sh
+
+Step 3: Allow Jenkins to execute this script
+sudo visudo -f /etc/sudoers.d/jenkins-devops
+jenkins ALL=(root) NOPASSWD: /opt/devops/scripts/install-docker.sh
+sudo visudo -c
+change to below one
+jenkins ALL=(root) NOPASSWD: /bin/bash /opt/devops/scripts/install-docker.sh
+Step 4: Create your first Jenkins Pipeline
+Now open Jenkins in your Windows browser:
+http://localhost:8080
+Click New Item.
+Enter the name Install-Docker.
+Select Pipeline.
+Click OK.
+Scroll down to the Pipeline section.
+Select Pipeline script.
+
+Step 5: Execute the pipeline
+Open your Install-Docker job.
+Click Build Now.
+Click the running build number.
+Open Console Output.
+
+debug
+jenkins-devops
+vagrant
+sudo chmod 0440 /etc/sudoers.d/jenkins-devops
+sudo chmod 0440 /etc/sudoers.d/vagrant
+
+sudo visudo -c
+
+sudo -u jenkins sudo -n /opt/devops/scripts/install-docker.sh
+
+=======================
+Here is the complete troubleshooting process we followed to fix the Jenkins sudo permission and Bash execution issues on your Ubuntu 24.04.5 LTS Vagrant VM.
+
+You can keep this as your DevOps project documentation.
+
+# Jenkins + Docker: Troubleshooting Documentation
+
+## 1. Problem: Incorrect sudoers file permissions
+
+We initially ran:
+
+bash
+
+```bash
+sudo visudo -c
+```
+
+The output showed:
+
+text
+
+```text
+/etc/sudoers.d/jenkins-devops: bad permissions, should be mode 0440
+/etc/sudoers.d/vagrant: bad permissions, should be mode 0440
+```
+
+Solution: Correct the permissions.
+
+bash
+
+```bash
+sudo chmod 0440 /etc/sudoers.d/jenkins-devops
+sudo chmod 0440 /etc/sudoers.d/vagrant
+```
+
+Verify:
+
+bash
+
+```bash
+sudo visudo -c
+```
+
+Expected:
+
+text
+
+```text
+/etc/sudoers: parsed OK
+/etc/sudoers.d/jenkins-devops: parsed OK
+/etc/sudoers.d/vagrant: parsed OK
+```
+
+## 2. Problem: Bash interpreter mismatch
+
+We tested:
+
+bash
+
+```bash
+sudo -u jenkins sudo -n /opt/devops/scripts/install-docker.sh
+```
+
+Received:
+
+text
+
+```text
+/opt/devops/scripts/install-docker.sh: 4: set: Illegal option -o pipefail
+```
+
+Reason: The script uses Bash-specific syntax:
+
+bash
+
+```bash
+set -euo pipefail
+```
+
+But it was being interpreted using `/bin/sh` (Dash).
+
+Solution: Execute the script explicitly using Bash.
+
+bash
+
+```bash
+sudo -u jenkins sudo -n /bin/bash /opt/devops/scripts/install-docker.sh
+```
+
+Check the script:
+
+bash
+
+```bash
+head -n 5 /opt/devops/scripts/install-docker.sh
+```
+
+Expected:
+
+bash
+
+```bash
+#!/bin/bash
+
+set -euo pipefail
+```
+
+## 3. Problem: Jenkins required a sudo password
+
+We received:
+
+text
+
+```text
+sudo: a password is required
+```
+
+Reason: The existing sudoers rule authorized direct execution of the script, but not execution through `/bin/bash`.
+
+Initially, our rule was:
+
+text
+
+```text
+jenkins ALL=(root) NOPASSWD: /opt/devops/scripts/install-docker.sh
+```
+
+We needed to authorize the explicit Bash command.
+
+## 4. Solution: Update Jenkins sudoers configuration
+
+Open the sudoers file:
+
+bash
+
+```bash
+sudo visudo -f /etc/sudoers.d/jenkins-devops
+```
+
+Replace its contents with:
+
+text
+
+```text
+jenkins ALL=(root) NOPASSWD: /bin/bash /opt/devops/scripts/install-docker.sh
+```
+
+Save and exit.
+
+Set correct permissions:
+
+bash
+
+```bash
+sudo chmod 0440 /etc/sudoers.d/jenkins-devops
+```
+
+Validate:
+
+bash
+
+```bash
+sudo visudo -c
+```
+
+## 5. Verify Jenkins sudo permissions
+
+Run:
+
+bash
+
+```bash
+sudo -l -U jenkins
+```
+
+Expected authorization:
+
+text
+
+```text
+User jenkins may run the following commands on master-node:
+    (root) NOPASSWD: /bin/bash /opt/devops/scripts/install-docker.sh
+```
+
+## 6. Final execution test
+
+Execute:
+
+bash
+
+```bash
+sudo -u jenkins sudo -n /bin/bash /opt/devops/scripts/install-docker.sh
+```
+
+This verifies that the Jenkins account can execute the authorized Docker installation script without an interactive password prompt.
+
+# Complete troubleshooting command reference
+
+Here are all the commands in execution order.
+
+bash
+
+```bash
+
+# 1. Fix sudoers permissions
+sudo chmod 0440 /etc/sudoers.d/jenkins-devops
+sudo chmod 0440 /etc/sudoers.d/vagrant
+
+# 2. Validate sudoers
+sudo visudo -c
+
+# 3. Check Docker script
+head -n 5 /opt/devops/scripts/install-docker.sh
+
+# 4. Edit Jenkins sudoers configuration
+sudo visudo -f /etc/sudoers.d/jenkins-devops
+
+# Add:
+# jenkins ALL=(root) NOPASSWD: /bin/bash /opt/devops/scripts/install-docker.sh
+
+# 5. Set correct permissions
+sudo chmod 0440 /etc/sudoers.d/jenkins-devops
+
+# 6. Validate configuration
+sudo visudo -c
+
+# 7. Verify Jenkins permissions
+sudo -l -U jenkins
+
+# 8. Test Docker installation script
+sudo -u jenkins sudo -n /bin/bash /opt/devops/scripts/install-docker.sh
+```
+
+## 7. Important security improvements
+
+For a production-quality setup:
+
+- Keep the installation script owned by root.
+- Do not allow Jenkins to modify scripts that it executes as root.
+- Restrict Jenkins administrators and pipeline permissions.
+- Avoid granting unrestricted sudo access to Jenkins.
+- Review privileged operations before executing them through pipelines.
+
+## 8. Current project progress
+
+## Master Node DevOps Project
+
+1. Ubuntu 24.04.5 LTS using Vagrant
+   Completed
+2. Jenkins installation and startup
+   Completed
+3. Jenkins sudoers configuration
+   Configuration corrected
+4. Bash execution configuration
+   Corrected
+5. Docker installation through Jenkins
+   Pending verification
+6. SonarQube, Kubernetes, Prometheus, Grafana and Argo CD
+   Upcoming
+
+One final distinction: We have corrected the sudoers configuration, but Docker installation is only confirmed after the installation script completes successfully.
+
+Our next milestone is to run the `Install-Docker` Jenkins pipeline and verify its `SUCCESS` status.
+========================
+GitHub webhook
+
+GitHub Webhook ek feature hai jo GitHub repository mein koi specific event hone par automatically kisi external application ya server ko notification/data send karta hai.
+Simple words mein: Jab GitHub par koi activity hoti hai, jaise code push, pull request ya issue create hona, toh GitHub automatically tumhare server ko inform kar deta hai.
+Real-life example
+Maan lo tum ek project par kaam kar rahe ho aur tumne GitHub par code push kiya.
+Ab tum chahte ho ki jaise hi code push ho:
+Automatically Jenkins trigger ho.
+Project ka build start ho.
+Tests run hon.
+Agar sab successful ho toh deployment ho jaye.
+Yahan GitHub Webhook use hota hai.

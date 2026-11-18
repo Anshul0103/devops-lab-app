@@ -1,0 +1,18 @@
+So far we have Completed
+We have installed in Jenkins on windows localhost:8080
+vs code on windows
+Git and GitHub
+created vm using vagrant and oracle virtual box
+ansible node and two target node
+installed ngrok for tunnel 
+
+but also this consuming alot of Ram and my pc becomes very slow
+
+Now
+lets changes the stratergy
+instead of using on windows or creating multiple vm
+we will create a single vm 
+there we will install docker and
+will repeat the same exercise 
+eeverything will be on this vm Jenkins, docker, ansible node , two target nodes 
+connectivity between git to Jenkins, Jenkins to ansible node and ansible node to targert nodes  

@@ -1,0 +1,370 @@
+Convert the following content into concise, professional interview-ready study notes.
+
+Requirements:
+
+Extract only the most important and relevant information
+Remove unnecessary, repetitive, or low-value content
+Focus on core concepts that are useful for job interviews
+Use clear short paragraphs + bullet points only where needed
+Keep explanations practical and experience-oriented (not academic)
+Highlight key terms, concepts, and definitions
+Add a section: Common Interview Questions (with short, precise answers)
+Add a section: Key Takeaways
+If something is not useful for interviews, omit it completely
+Maintain clean markdown formatting
+Keep it crisp, structured, and revision-friendly
+
+Here is the content:
+
+Where to use Git?
+Git works on your computer, but you also use it with online services like GitHub, GitLab, or Bitbucket to share your work with others. These are called remote repositories.
+
+In this tutorial, you'll learn how to use Git for your own projects and how to connect with remote repositories online.
+
+Learning by Examples
+In this tutorial, we will show you Git commands like this:
+
+Example
+git --version
+git version 2.30.2.windows.1
+For new users, using the terminal view can seem a bit complicated.
+
+Example
+git --version
+Lines like this are the output/response to our commands:
+
+These are the commands you can copy and run in your terminal.
+
+Tip for Beginners: Don't worry about making mistakes!
+
+When you use Git on your own computer, you can't really break anything important.
+
+Experimenting is a great way to learn, and you can always undo or redo changes as you go.
+What is Git?
+Git is a popular version control system.
+
+It was created by Linus Torvalds in 2005, and has been maintained by Junio Hamano since then.
+
+It is used for:
+
+Tracking code changes
+Tracking who made changes
+Coding collaboration
+Key Git Concepts
+Repository: A folder where Git tracks your project and its history.
+Clone: Make a copy of a remote repository on your computer.
+Stage: Tell Git which changes you want to save next.
+Commit: Save a snapshot of your staged changes.
+Branch: Work on different versions or features at the same time.
+Merge: Combine changes from different branches.
+Pull: Get the latest changes from a remote repository.
+Push: Send your changes to a remote repository.
+Working with Git
+Initialize Git on a folder, making it a Repository
+Git now creates a hidden folder to keep track of changes in that folder
+When a file is changed, added or deleted, it is considered modified
+You select the modified files you want to Stage
+The Staged files are Committed, which prompts Git to store a permanent snapshot of the files
+Git allows you to see the full history of every commit.
+You can revert back to any previous commit.
+Git does not store a separate copy of every file in every commit, but keeps track of changes made in each commit!
+Configure Git
+Now let Git know who you are.
+
+This is important for version control systems, as each Git commit uses this information:
+
+Tip for Beginners: Configuring Git is safe.
+
+You can change these settings at any time, they only affect how your name and email appear in your commits.
+
+User Name
+Your name will be attached to your commits. Set it with:
+
+Example
+git config --global user.name "Your Name"
+Note: If you make a typo or mistake, just run the command again with the correct value.
+
+The new setting will overwrite the old one.
+
+Email Address
+Your email is also attached to your commits. Set it with:
+
+Example
+git config --global user.email "you@example.com"
+Change the user name and email to your own.
+
+You will probably also want to use this when registering to GitHub later on.
+
+Note: If you forget to set your name or email, Git will prompt you the first time you try to commit.
+
+You can always change these settings later, and previous commits will keep the old info.
+
+Use --global to set the value for every repository on your computer.
+
+Use --local (the default) to set it only for the current repository.
+
+Why Configure Git?
+Git uses your name and email to label your commits.
+
+If you do not set these, Git will prompt you the first time you try to commit.
+
+Now you have added the minimum of configuration needed to start using Git.
+
+So feel free to continue with the next chapter.
+
+For more information about configuration, or if you want to change anything, keep reading this page.
+
+REMOVE ADS
+
+Viewing Your Configuration
+You can see all your Git settings with:
+
+Example: List All Settings
+git config --list
+user.name=Your Name
+user.email=you@example.com
+core.editor=code --wait
+alias.st=status
+init.defaultbranch=main
+...
+To view a specific value, use:
+
+Example: View a Specific Setting
+git config user.name
+Your Name
+Changing or Unsetting Config Values
+To change a value, just run the git config command again with the new value.
+
+To remove a setting, use --unset:
+
+Example: Unset an Alias
+git config --global --unset code.editor
+Default Branch Name
+Set the default branch name for new repositories (for example, main instead of master):
+
+Example: Set Default Branch Name
+git config --global init.defaultBranch main
+Configuration Levels
+There are three levels of configuration:
+
+System (all users): git config --system
+Global (current user): git config --global
+Local (current repo): git config --local
+The order of precedence is:
+
+Local (current repo)
+Global (current user)
+System (all users)
+The reason to use the different levels is that you can set different values for different users or repositories.
+
+This can be used for example to set different default branches for different repositories and users.
+
+Example: Set a Local Config
+Local settings only apply to the current repository.
+
+git config user.name "Project Name"
+Example: Set a Global Config
+Global settings apply to all repositories for the current user.
+
+git config --global user.name "Global Name"
+Example: Set a System Config
+System settings apply to all repositories for all users.
+
+git config --system user.name "System Name"
+Get Started with Git
+Now that Git is installed, and it knows who you are, you can start using Git.
+
+Lets create our first repository
+
+Key Steps to Get Started
+Create a project folder
+Navigate to the folder
+Initialize a Git repository
+Creating Git Folder
+Start by creating a new folder for our project:
+
+Example
+mkdir myproject
+cd myproject
+mkdir creates a new directory.
+
+cd changes our working directory.
+
+Now we are in the correct directory and can initialize Git!
+
+Note: Open Git Bash Here (Windows)
+
+If you're using Windows, you can open Git Bash directly in your project folder:
+
+Right-click the folder in File Explorer
+Select Git Bash Here
+This opens a terminal window in the correct location.
+
+REMOVE ADS
+
+Initialize Git
+Now that we are in the correct folder, we can initialize Git on that folder:
+
+Example
+git init 
+Initialized empty Git repository in /Users/user/myproject/.git/
+You just created your first Git Repository!
+
+What is a Repository?
+A Git repository is a folder that Git tracks for changes.
+
+The repository stores all your project's history and versions.
+
+What Happens When You Run git init?
+Git creates a hidden folder called .git inside your project.
+
+This is where Git stores all the information it needs to track your files and history.
+
+Example: Show Hidden .git Folder (Linux/macOS)
+ls -a
+.  ..  .git
+On Windows, you may need to enable "Show hidden files" in File Explorer to see the .git folder.
+
+Troubleshooting
+git: command not found
+Solution: Make sure Git is installed and added to your PATH. Restart your terminal if needed.
+Permission denied
+Solution: Try running your terminal as administrator (Windows) or use sudo (macOS/Linux) if needed.
+What is a New File?
+A new file is a file that you have created or copied into your project folder, but haven't told Git to watch.
+
+Here are the key things to know:
+
+Create a new file (with a text editor)
+ls - List files in the folder
+git status - Check which files are tracked
+Understand untracked and tracked files
+Create a New File
+Your new Git repository is empty.
+
+Let's add a file using your favorite text editor, and save it in your project folder.
+
+If you need help creating a file, see our HTML Editors page.
+
+For this example, we'll use a simple HTML file:
+
+Example: Simple HTML File
+<!DOCTYPE html>
+<html>
+<head>
+<title>Hello World!</title>
+</head>
+<body>
+
+<h1>Hello world!</h1>
+<p>This is the first file in my new Git Repo.</p>
+
+</body>
+</html>
+Save this as index.html in your project folder.
+
+REMOVE ADS
+
+List Files in the Directory
+To see which files are in your project folder, use the ls command:
+
+Example
+ls
+index.html
+ls lists all files in the current folder.
+
+You should see index.html in the output.
+
+Check File Status with git status
+Now check if Git is tracking your new file:
+
+Example
+git status
+On branch master
+
+No commits yet
+
+Untracked files:
+  (use "git add ..." to include in what will be committed)
+    index.html
+
+nothing added to commit but untracked files present (use "git add" to track)
+Git sees index.html, but it is untracked (not yet added to the repository).
+
+What is an Untracked File?
+An untracked file is any file in your project folder that Git is not yet tracking.
+
+These are files you've created or copied into the folder, but haven't told Git to watch.
+
+What is a Tracked File?
+A tracked file is a file that Git is watching for changes.
+
+To make a file tracked, you need to add it to the staging area (covered in the next chapter).
+
+Troubleshooting
+File not showing up with ls: Make sure you saved it in the correct folder.
+Use pwd to check your current directory.
+File not listed in git status: Make sure you are in the correct folder and that you saved the file.
+What is the Staging Environment?
+The staging environment (or staging area) is like a waiting room for your changes.
+
+You use it to tell Git exactly which files you want to include in your next commit.
+
+This gives you control over what goes into your project history.
+
+Here are some key commands for staging:
+
+git add <file> - Stage a file
+git add --all or git add -A - Stage all changes
+git status - See what is staged
+git restore --staged <file> - Unstage a file
+Stage a File with git add
+To add a file to the staging area, use git add <file>:
+
+Example
+git add index.html
+Now index.html is staged. You can check what is staged with git status:
+
+Example
+git status
+On branch master
+
+No commits yet
+
+Changes to be committed:
+  (use "git restore --staged ..." to unstage)
+    new file: index.html
+REMOVE ADS
+
+Stage Multiple Files (git add --all, git add -A)
+You can stage all changes (new, modified, and deleted files) at once:
+
+Example
+git add --all
+git add -A does the same thing as git add --all.
+
+Check Staged Files with git status
+See which files are staged and ready to commit:
+
+Example
+git status
+On branch master
+
+No commits yet
+
+Changes to be committed:
+  (use "git restore --staged ..." to unstage)
+        new file:   README.md
+        new file:   bluestyle.css
+        new file:   index.html
+How to Unstage a File
+If you staged a file by mistake, you can remove it from the staging area (unstage it) with:
+
+Example
+git restore --staged index.html
+Now index.html is no longer staged. You can also use git reset HEAD index.html for the same effect.
+
+Troubleshooting
+Staged the wrong file? Use git restore --staged <file> to unstage it.
+Forgot to stage a file? Just run git add <file> again before you commit.
+Not sure what's staged? Run git status to see what will be committed.

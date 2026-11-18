@@ -1,0 +1,99 @@
+hostname
+ip -br addr
+ansible --version
+terraform version
+docker --version
+docker ps
+
+curl http://localhost:4566/
+
+
+
+------------------
+AWS - 
+create user
+aws --endpoint-url=http://localhost:4566 \
+  --region us-east-1 \
+  iam create-user \
+  --user-name Kiro
+
+Create Access key
+
+aws --endpoint-url=http://localhost:4566 \
+  --region us-east-1 \
+  iam create-access-key \
+  --user-name Kiro
+
+=====================
+Before installing anything, a DevOps engineer should ask:
+- What problem am I solving?
+- What is the expected final result?
+- What infrastructure do I need?
+- Which tool is responsible for which task?
+- How will I validate that the solution works?
+- What happens if something fails?
+- How do I prevent accidental production changes?
+
+================
+git rm -r --cached .vagrant/
+git add .gitignore
+git commit -m "Add gitignore for Vagrant generated files"
+
+quest imp: ask again what does mean loopback ip
+127.0.2.1 is a loopback IP address, not the actual network IP you should use for SSH from another VM or machine.
+
+Your output shows:
+Interface	IP address	Purpose
+lo	127.0.0.1	Loopback (ignore)
+enp0s3	10.0.2.15	Vagrant NAT network
+enp0s8	192.168.56.10	Host-only network
+
+quest - ping ?
+
+====================
+why we are not able to login to ansible using windows powershell-
+Issues we faced
+1. Wrong IP address: Initially, we used 127.0.2.1, which is a loopback address.
+2. SSH host key changed: Windows had stored an old SSH fingerprint.
+3. SSH authentication failed: The ansible user didn't exist on the Ansible VM, but we were trying to connect using ansible@192.168.56.10.
+
+How we fixed them
+1. Found the correct VM IP using ip -br addr: 192.168.56.10.
+2. Removed the old SSH fingerprint using:
+   ssh-keygen -R 192.168.56.10
+3. Created the ansible user:
+   sudo useradd -m -s /bin/bash ansible
+4. Added the Windows public key to:
+   /home/ansible/.ssh/authorized_keys
+5. Fixed SSH directory and file permissions.
+6. Verified that the ansible user exists and can log in.
+Next step
+Test SSH key authentication from Windows:
+ssh -i ~/.ssh/id_ed25519 ansible@192.168.56.10
+
+permissions-
+sudo chown -R ansible:ansible /home/ansible/.ssh
+
+sudo chmod 700 /home/ansible/.ssh
+
+sudo chmod 600 /home/ansible/.ssh/authorized_keys
+
+=====================
+setup Jenkins
+give access of ansible to Jenkins so it can login
+
+=======================
+What we need to configure
+There are four main steps:
+1. Jenkins plugins: Install Git and GitHub integration plugins.
+2. GitHub credentials: Configure authentication so Jenkins can access your repository.
+3. GitHub webhook: Configure GitHub to notify Jenkins when code is pushed.
+4. Jenkins pipeline: Configure Jenkins to trigger builds when changes arrive.
+
+Important: If Jenkins is running on your laptop using localhost:8080, GitHub cannot directly reach it over the internet. We'll need a secure tunnel or another webhook-accessible endpoint.
+===================
+Jenkins is running on my laptop(windows) using localhost:8080
+Issue - GitHub cannot directly communicate with localhost:8080
+why? because localhost refers to your own laptop. Github's servers can not access your laptop through that address(ansible_node which is a vm on oracle virtual box and have different ip, not same as laptop).
+solution: we will use a secure tunneling tool to expose Jenkins temporarily to github
+
